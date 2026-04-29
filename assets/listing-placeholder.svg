@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Global Marketing Real Estate Placeholder</title>
+  <desc id="desc">Temporary property listing image placeholder.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0D1D2D" />
+      <stop offset="100%" stop-color="#283E4C" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)" />
+  <circle cx="930" cy="170" r="120" fill="#C6A677" opacity="0.18" />
+  <circle cx="190" cy="620" r="160" fill="#EDE6D6" opacity="0.1" />
+  <rect x="120" y="140" width="960" height="520" rx="34" fill="#EDE6D6" opacity="0.08" stroke="#C6A677" stroke-width="3" />
+  <text x="600" y="330" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-size="54" fill="#EDE6D6" font-weight="700">Global Marketing Real Estate</text>
+  <text x="600" y="410" text-anchor="middle" font-family="Cairo, Arial, sans-serif" font-size="42" fill="#C6A677" font-weight="700">Temporary Listing Image</text>
+  <text x="600" y="485" text-anchor="middle" font-family="Cairo, Arial, sans-serif" font-size="30" fill="#EDE6D6">Replace this image with the final unit photo later</text>
+</svg>

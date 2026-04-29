@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Mivida placeholder image</title>
+  <desc id="desc">Temporary image for Mivida listings.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#283E4C" />
+      <stop offset="100%" stop-color="#0D1D2D" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)" />
+  <rect x="95" y="95" width="1010" height="610" rx="38" fill="#C6A677" opacity="0.14" />
+  <text x="600" y="300" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-size="70" fill="#EDE6D6" font-weight="700">MIVIDA</text>
+  <text x="600" y="395" text-anchor="middle" font-family="Cairo, Arial, sans-serif" font-size="38" fill="#C6A677" font-weight="700">Placeholder Unit Photo</text>
+  <text x="600" y="470" text-anchor="middle" font-family="Cairo, Arial, sans-serif" font-size="28" fill="#EDE6D6">Apartment • Twinhouse • Standalone Villa</text>
+</svg>

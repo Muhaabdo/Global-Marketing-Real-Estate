@@ -301,10 +301,6 @@ const DESCRIPTION_TRANSLATIONS_AR = {
 };
 
 function _resolveLanguage(pageKey) {
-  if (pageKey === 'commercial') {
-    return 'ar';
-  }
-
   return _getSavedSiteLanguage();
 }
 
@@ -391,25 +387,23 @@ async function initListingsPage(unitTypes, pageKey) {
     renderCards();
   });
 
-  if (pageKey !== 'commercial') {
-    document.addEventListener('siteLanguageChanged', function() {
-      currentLang = _resolveLanguage(pageKey);
-      uiStrings = _resolveUiStrings(pageKey);
-      renderFilters();
+  document.addEventListener('siteLanguageChanged', function() {
+    currentLang = _resolveLanguage(pageKey);
+    uiStrings = _resolveUiStrings(pageKey);
+    renderFilters();
 
-      if (activeType) {
-        const activeBtn = Array.from(filterBar.querySelectorAll('.filter-btn'))
-          .find(button => button.dataset.type === activeType);
+    if (activeType) {
+      const activeBtn = Array.from(filterBar.querySelectorAll('.filter-btn'))
+        .find(button => button.dataset.type === activeType);
 
-        if (activeBtn) {
-          filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-          activeBtn.classList.add('active');
-        }
+      if (activeBtn) {
+        filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        activeBtn.classList.add('active');
       }
+    }
 
-      renderCards();
-    });
-  }
+    renderCards();
+  });
 }
 
 /* ── Internal helpers ── */
@@ -453,8 +447,14 @@ function _buildCard(item, uiStrings, currentLang, pageKey) {
   const hasMultipleImages = Array.isArray(item.images) && item.images.length > 0;
   const images = hasMultipleImages ? item.images : [item.image || PLACEHOLDER_IMAGE];
   const contactInfo = CONTACT_INFO[item.page] || CONTACT_INFO.default;
-  const localizedUnitType = _localizeUnitType(item.unitType, currentLang, pageKey);
-  const localizedTitle = _localizeTitle(item.title, currentLang, pageKey);
+  const localizedUnitType = pageKey === 'commercial'
+    ? (currentLang === 'ar' ? (item.unitTypeAr || item.unitType) : (item.unitTypeEn || item.unitType))
+    : _localizeUnitType(item.unitType, currentLang, pageKey);
+
+  const localizedTitle = pageKey === 'commercial'
+    ? (currentLang === 'ar' ? (item.titleAr || item.title) : (item.titleEn || item.title))
+    : _localizeTitle(item.title, currentLang, pageKey);
+
   const localizedDescription = _localizeDescription(item.description, currentLang, pageKey);
   const waText = encodeURIComponent(uiStrings.waTemplate({
     title: localizedTitle,
@@ -534,7 +534,7 @@ function _buildCard(item, uiStrings, currentLang, pageKey) {
 
 function _localizeUnitType(unitType, lang, pageKey) {
   if (pageKey === 'commercial') {
-    return unitType;
+    return _getCommercialUnitTypeLabel(unitType, lang);
   }
 
   const normalized = _cleanCell(unitType);
@@ -617,6 +617,10 @@ async function _loadCommercialListings() {
   if (Array.isArray(window.COMMERCIAL_INVENTORY_DATA) && window.COMMERCIAL_INVENTORY_DATA.length) {
     COMMERCIAL_LISTINGS_CACHE = window.COMMERCIAL_INVENTORY_DATA.map(item => ({
       ...item,
+      titleAr: _cleanCell(item.title),
+      titleEn: _getCommercialEnglishTitle(item),
+      unitTypeAr: _getCommercialUnitTypeLabel(item.unitType, 'ar'),
+      unitTypeEn: _getCommercialUnitTypeLabel(item.unitType, 'en'),
       image: item.image || PLACEHOLDER_IMAGE
     }));
 
@@ -624,6 +628,79 @@ async function _loadCommercialListings() {
   }
 
   return [];
+}
+
+function _getCommercialUnitTypeLabel(unitType, lang) {
+  const normalized = _cleanCell(unitType).toLowerCase();
+
+  const unitTypeMap = {
+    admin: { ar: 'إداري', en: 'Office' },
+    office: { ar: 'إداري', en: 'Office' },
+    'إداري': { ar: 'إداري', en: 'Office' },
+    commercial: { ar: 'تجاري', en: 'Retail' },
+    retail: { ar: 'تجاري', en: 'Retail' },
+    shop: { ar: 'تجاري', en: 'Retail' },
+    'تجاري': { ar: 'تجاري', en: 'Retail' },
+    clinic: { ar: 'عيادة', en: 'Clinic' },
+    medical: { ar: 'عيادة', en: 'Clinic' },
+    'عيادة': { ar: 'عيادة', en: 'Clinic' }
+  };
+
+  const directMatch = unitTypeMap[normalized];
+  if (directMatch) {
+    return directMatch[lang] || directMatch.en;
+  }
+
+  if (normalized.includes('admin') || normalized.includes('office') || normalized.includes('إداري')) {
+    return lang === 'ar' ? 'إداري' : 'Office';
+  }
+
+  if (normalized.includes('commercial') || normalized.includes('retail') || normalized.includes('shop') || normalized.includes('تجاري')) {
+    return lang === 'ar' ? 'تجاري' : 'Retail';
+  }
+
+  if (normalized.includes('clinic') || normalized.includes('medical') || normalized.includes('عيادة')) {
+    return lang === 'ar' ? 'عيادة' : 'Clinic';
+  }
+
+  return _cleanCell(unitType);
+}
+
+function _getCommercialEnglishTitle(item) {
+  const title = _cleanCell(item.title);
+  const hasArabicChars = /[\u0600-\u06FF]/.test(title);
+
+  if (!title) {
+    return _buildFallbackCommercialEnglishTitle(item);
+  }
+
+  if (!hasArabicChars) {
+    return title;
+  }
+
+  return _buildFallbackCommercialEnglishTitle(item);
+}
+
+function _buildFallbackCommercialEnglishTitle(item) {
+  const projectName = _cleanCell(item.projectName) || 'Commercial Project';
+  const unitTypeEn = _getCommercialUnitTypeLabel(item.unitType, 'en');
+  const normalizedType = unitTypeEn === 'Office' ? 'Office Space' : unitTypeEn;
+
+  const specs = Array.isArray(item.specs) ? item.specs : [];
+  const areaSpec = _cleanCell(specs[0]);
+  const locationSpec = _cleanCell(specs[1]);
+
+  let generated = `${normalizedType} for Rent in ${projectName}`;
+
+  if (areaSpec) {
+    generated += ` - ${areaSpec}`;
+  }
+
+  if (locationSpec) {
+    generated += ` (${locationSpec})`;
+  }
+
+  return generated;
 }
 
 function _normalizeInventoryRow(row) {

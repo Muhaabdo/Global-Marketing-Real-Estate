@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const STORAGE_KEY = 'siteLang';
     const DEFAULT_LANG = 'en';
     const SUPPORTED_LANGS = new Set(['en', 'ar']);
-    const EXCLUDED_PAGES = new Set(['commercial-real-estate.html']);
+    const EXCLUDED_PAGES = new Set();
     const currentPath = (window.location.pathname || '').split('/').pop() || 'index.html';
 
     if (EXCLUDED_PAGES.has(currentPath)) {
@@ -272,6 +272,11 @@ document.addEventListener('DOMContentLoaded', function() {
         'cairo-festival-city.html': {
             pageTitle: { en: 'Cairo Festival City Rental Units', ar: 'وحدات كايرو فيستال سيتي للإيجار' },
             pageSubtitle: { en: 'Apartments and townhouses in Cairo Festival City - Fifth Settlement', ar: 'شقق وتاون هاوس في كمبوند كايرو فيستال سيتي - التجمع الخامس' },
+            emptyState: { en: 'No units are currently available in this category. Contact us for inquiries.', ar: 'لا توجد وحدات متاحة في هذه الفئة حالياً. تواصل معنا للاستفسار.' }
+        },
+        'commercial-real-estate.html': {
+            pageTitle: { en: 'Commercial Properties for Rent', ar: 'عقارات تجارية للإيجار' },
+            pageSubtitle: { en: 'Diverse commercial units - offices, shops, clinics, and more', ar: 'وحدات تجارية متنوعة - مكاتب، محلات، عيادات وأكثر' },
             emptyState: { en: 'No units are currently available in this category. Contact us for inquiries.', ar: 'لا توجد وحدات متاحة في هذه الفئة حالياً. تواصل معنا للاستفسار.' }
         },
         'privacy.html': {

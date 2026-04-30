@@ -211,7 +211,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const DEFAULT_LANG = 'en';
     const SUPPORTED_LANGS = new Set(['en', 'ar']);
     const EXCLUDED_PAGES = new Set();
-    const currentPath = (window.location.pathname || '').split('/').pop() || 'index.html';
+    const rawPath = (window.location.pathname || '').split('/').pop() || 'index.html';
+    const currentPath = rawPath.includes('.') ? rawPath : `${rawPath}.html`;
 
     if (EXCLUDED_PAGES.has(currentPath)) {
         return;
@@ -243,6 +244,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         'index.html': {
+            documentTitle: { en: 'Global Marketing Real Estate — Your Premier Real Estate Destination', ar: 'Global Marketing Real Estate — وجهتك العقارية الأولى' },
             heroTitle: { en: 'Your Premier Real Estate Destination in Egypt', ar: 'وجهتك العقارية الأولى في مصر' },
             heroDescription: { en: 'Buy \u00B7 Rent \u00B7 Invest - Apartments, Villas & Commercial Properties in Egypt\'s Finest Compounds', ar: 'بيع \u00B7 إيجار \u00B7 استثمار - شقق وفيلات وعقارات تجارية في أفضل كمبوندات مصر' },
             heroCta: { en: 'Explore units', ar: 'استعرض الوحدات' },
@@ -260,16 +262,25 @@ document.addEventListener('DOMContentLoaded', function() {
             statCompounds: { en: 'Prime compounds', ar: 'كمبوندات مميزة' },
             statService: { en: 'Integrated services', ar: 'خدمات متكاملة' },
             statSupport: { en: 'Support & communication', ar: 'دعم وتواصل' },
+            statServiceNumber: { en: 'Sale & Rent', ar: 'بيع وإيجار' },
             whyEyebrow: { en: 'Who we are', ar: 'من نحن' },
             whyTitle: { en: 'Why Global Marketing Real Estate?', ar: 'لماذا Global Marketing Real Estate؟' },
-            whySubtitle: { en: 'We bring top real estate opportunities into one place with expertise, transparency, and end-to-end service.', ar: 'نجمع لك أفضل الفرص العقارية في مكان واحد، بخبرة وشفافية وخدمة متكاملة' }
+            whySubtitle: { en: 'We bring top real estate opportunities into one place with expertise, transparency, and end-to-end service.', ar: 'نجمع لك أفضل الفرص العقارية في مكان واحد، بخبرة وشفافية وخدمة متكاملة' },
+            whyItem1Title: { en: 'Certified independent real estate broker', ar: 'وسيط عقاري معتمد ومستقل' },
+            whyItem1Desc: { en: 'We work as a professional, independent real estate broker, offering objective advice without bias and helping you make the right decision the first time.', ar: 'نعمل كوسيط عقاري محترف ومستقل، نقدم استشارات موضوعية بدون تحيّز، ونساعدك في اتخاذ القرار الصح من أول مرة.' },
+            whyItem2Title: { en: 'A wide range of options', ar: 'تشكيلة واسعة من الخيارات' },
+            whyItem2Desc: { en: 'Buy, rent, invest — apartments, villas, and commercial properties in Egypt\'s finest compounds. Options to fit every budget and every need.', ar: 'بيع، إيجار، استثمار — شقق وفيلات وعقارات تجارية في أرقى كمبوندات مصر. خيارات تناسب كل ميزانية وكل احتياج.' },
+            whyItem3Title: { en: 'Full transparency and reliability', ar: 'شفافية وموثوقية تامة' },
+            whyItem3Desc: { en: 'We are committed to complete transparency across every detail — prices, payment plans, and legal information — because your trust is the foundation of our work.', ar: 'نلتزم بالشفافية الكاملة في جميع التفاصيل — الأسعار، خطط السداد، والمعلومات القانونية — لأن ثقتك هي أساس عملنا.' }
         },
         'mivida.html': {
+            documentTitle: { en: 'Mivida Rental Units - Global Marketing Real Estate', ar: 'وحدات مفيدا للإيجار - Global Marketing Real Estate' },
             pageTitle: { en: 'Mivida Rental Units', ar: 'وحدات مفيدا للإيجار' },
             pageSubtitle: { en: 'Apartments, villas, and townhouses in Mivida - New Cairo', ar: 'شقق وفيلات وتاون هاوس في كمبوند مفيدا - القاهرة الجديدة' },
             emptyState: { en: 'No units are currently available in this category. Contact us for inquiries.', ar: 'لا توجد وحدات متاحة في هذه الفئة حالياً. تواصل معنا للاستفسار.' }
         },
         'cairo-festival-city.html': {
+            documentTitle: { en: 'Cairo Festival City Rentals - Global Marketing Real Estate', ar: 'وحدات كايرو فيستال سيتي للإيجار - Global Marketing Real Estate' },
             pageTitle: { en: 'Cairo Festival City Rental Units', ar: 'وحدات كايرو فيستال سيتي للإيجار' },
             pageSubtitle: { en: 'Apartments and townhouses in Cairo Festival City - Fifth Settlement', ar: 'شقق وتاون هاوس في كمبوند كايرو فيستال سيتي - التجمع الخامس' },
             emptyState: { en: 'No units are currently available in this category. Contact us for inquiries.', ar: 'لا توجد وحدات متاحة في هذه الفئة حالياً. تواصل معنا للاستفسار.' }
@@ -280,22 +291,39 @@ document.addEventListener('DOMContentLoaded', function() {
             emptyState: { en: 'No units are currently available in this category. Contact us for inquiries.', ar: 'لا توجد وحدات متاحة في هذه الفئة حالياً. تواصل معنا للاستفسار.' }
         },
         'privacy.html': {
+            documentTitle: { en: 'Privacy Policy - Global Marketing Real Estate', ar: 'سياسة الخصوصية - Global Marketing Real Estate' },
             policyTitle: { en: 'Privacy Policy', ar: 'سياسة الخصوصية' }
         },
         'disclaimer.html': {
+            documentTitle: { en: 'Disclaimer - Global Marketing Real Estate', ar: 'إخلاء المسؤولية - Global Marketing Real Estate' },
             policyTitle: { en: 'Disclaimer', ar: 'إخلاء المسؤولية' }
         },
         'contact.html': {
+            documentTitle: { en: 'Contact Us - Global Marketing Real Estate', ar: 'اتصل بنا - Global Marketing Real Estate' },
             contactTitle: { en: 'Contact Us', ar: 'اتصل بنا' }
         },
         'thank-you.html': {
+            documentTitle: { en: 'Thank You - Global Marketing Real Estate', ar: 'شكراً لك - Global Marketing Real Estate' },
             thankTitle: { en: 'Thank You!', ar: 'شكراً لك!' },
             thankSubtitle: { en: 'Your inquiry has been received successfully.', ar: 'تم استقبال بيانات الاستفسار الخاصة بك بنجاح' },
+            thankIntro1: { en: 'Thank you for choosing Global Marketing Real Estate to find your standout real estate opportunity.', ar: 'نشكرك على اختيارك منصة Global Marketing Real Estate للبحث عن فرصتك العقارية المميزة.' },
+            thankIntro2: { en: 'Your inquiry has been registered, and our specialized team will review it as soon as possible.', ar: 'تم تسجيل طلبك بنجاح، وسيقوم فريقنا المتخصص بمراجعة بيانات استفسارك في أقرب وقت.' },
+            thankWhatNow: { en: 'What happens next?', ar: 'ماذا يحدث الآن؟' },
+            thankStep1Title: { en: 'Inquiry received', ar: 'استقبال الطلب' },
+            thankStep1Desc: { en: 'Your inquiry has been registered and your contact details stored securely.', ar: 'تم تسجيل طلبك وحفظ بيانات تواصلك بأمان' },
+            thankStep2Title: { en: 'Review', ar: 'المراجعة' },
+            thankStep2Desc: { en: 'Our team will review your inquiry and find the best options for you.', ar: 'سيقوم فريقنا بمراجعة استفسارك والبحث عن أفضل الخيارات لك' },
+            thankStep3Title: { en: 'Contact', ar: 'التواصل' },
+            thankStep3Desc: { en: 'We will reach out to you by phone or email within 24 hours.', ar: 'سنتواصل معك عبر الهاتف أو البريد الإلكتروني خلال 24 ساعة' },
+            thankStep4Title: { en: 'Consultation', ar: 'الاستشارة' },
+            thankStep4Desc: { en: 'We will provide free consultation and full information about the project that suits you best.', ar: 'سنقدم لك الاستشارة المجانية والمعلومات الشاملة عن المشروع المناسب' },
             thankHelpTitle: { en: 'Need help?', ar: 'هل تحتاج إلى مساعدة؟' },
             thankHelpText: { en: 'If your request is urgent, you can contact us directly:', ar: 'في حالة الاستعجالية أو إذا كان لديك أي استفسار، يمكنك التواصل معنا مباشرة:' },
             thankCallNow: { en: 'Call us now', ar: 'اتصل بنا الآن' },
             thankWhatsApp: { en: 'WhatsApp', ar: 'واتساب' },
-            thankBackHome: { en: 'Back to Home', ar: 'العودة للصفحة الرئيسية' }
+            thankBackHome: { en: 'Back to Home', ar: 'العودة للصفحة الرئيسية' },
+            thankNoteLabel: { en: 'Note:', ar: 'ملاحظة:' },
+            thankNoteText: { en: 'Be sure to check your email (including the spam folder) so you don\'t miss any messages from us.', ar: 'تأكد من مراجعة بريدك الإلكتروني (بما فيه مجلد الرسائل العشوائية) للتأكد من عدم فقدان أي رسائل منا.' }
         }
     };
 
@@ -377,6 +405,11 @@ document.addEventListener('DOMContentLoaded', function() {
         updateToggleButtons(resolvedLang);
         applyDataI18n(resolvedLang);
         applyLegacyLanguageBlocks(resolvedLang);
+
+        const titleText = getText('documentTitle', resolvedLang);
+        if (titleText) {
+            document.title = titleText;
+        }
 
         document.dispatchEvent(new CustomEvent('siteLanguageChanged', {
             detail: { lang: resolvedLang, page: currentPath }

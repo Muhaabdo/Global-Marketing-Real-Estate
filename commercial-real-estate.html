@@ -57,19 +57,12 @@
             <p data-i18n="pageSubtitle">Diverse commercial units - offices, shops, clinics, and more</p>
         </section>
 
-        <!-- Listings Section -->
+        <!-- Listings Section Removed -->
         <section class="listings-section">
-            <!-- Filter Bar -->
-            <div id="listings-filter" class="listing-filter" role="group" aria-label="Unit type filter">
-                <!-- Populated by listings.js -->
-            </div>
-
-            <!-- Cards Grid -->
-            <div class="projects-grid" id="listings-grid" style="padding-top: 24px;">
-                <!-- Populated by listings.js -->
-                <p id="listings-empty" class="listings-empty">
+            <div class="projects-grid" style="padding-top: 24px;">
+                <p class="listings-empty" style="display: block;">
                     <i class="fa-solid fa-building-circle-xmark"></i>
-                    <span data-i18n="emptyState">No units are currently available in this category. Contact us for more details.</span>
+                    <span data-i18n="emptyState">No listings are published on this page right now. Please contact us for direct assistance.</span>
                 </p>
             </div>
         </section>
@@ -130,11 +123,6 @@
     </div>
 
     <script src="js/script.js?v=2"></script>
-    <script src="js/commercial-inventory-data.js?v=2"></script>
     <script src="js/listings.js?v=2"></script>
-    <script>
-        // Unit types are auto-detected from the embedded commercial inventory data.
-        initListingsPage([], 'commercial');
-    </script>
 </body>
 </html>

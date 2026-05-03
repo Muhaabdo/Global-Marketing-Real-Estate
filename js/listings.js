@@ -266,7 +266,7 @@ const LISTINGS_UI_STRINGS = {
     callNow: 'اتصل الآن',
     whatsapp: 'واتساب',
     emptyState: 'لا توجد وحدات متاحة في هذه الفئة حالياً. تواصل معنا للاستفسار.',
-    waTemplate: item => `مرحبا، أنا مهتم بالوحدة:\n${item.title}\nالنوع: ${item.unitType}\nالسعر: ${item.price}`
+    waTemplate: item => `مرحبا، أنا مهتم بالوحدة:\n${item.title}\nالنوع: ${item.unitType}\nالمشروع: ${item.projectName}\nالتفاصيل: ${item.specsText}\nالسعر: ${item.price}`
   },
   en: {
     all: 'All',
@@ -274,7 +274,7 @@ const LISTINGS_UI_STRINGS = {
     callNow: 'Call Now',
     whatsapp: 'WhatsApp',
     emptyState: 'No units are currently available in this category. Contact us for inquiries.',
-    waTemplate: item => `Hello, I am interested in this unit:\n${item.title}\nType: ${item.unitType}\nPrice: ${item.price}`
+    waTemplate: item => `Hello, I am interested in this unit:\n${item.title}\nType: ${item.unitType}\nProject: ${item.projectName}\nDetails: ${item.specsText}\nPrice: ${item.price}`
   }
 };
 
@@ -455,19 +455,22 @@ function _buildCard(item, uiStrings, currentLang, pageKey) {
     ? (currentLang === 'ar' ? (item.titleAr || item.title) : (item.titleEn || item.title))
     : _localizeTitle(item.title, currentLang, pageKey);
 
+  /* ── Primary specs (area, bedrooms, bathrooms) ── */
+  const specs = Array.isArray(item.specs) ? item.specs : _splitDescription(item.specs || '');
+  const localizedSpecs = specs.map(spec => _localizeSpec(spec, currentLang, pageKey));
+
   const localizedDescription = _localizeDescription(item.description, currentLang, pageKey);
   const waText = encodeURIComponent(uiStrings.waTemplate({
     title: localizedTitle,
     unitType: localizedUnitType,
+    projectName: item.projectName || '-',
+    specsText: localizedSpecs.length ? localizedSpecs.join(' | ') : '-',
     price: item.price
   }));
   const projectLabelHtml = item.projectName
     ? `<span class="listing-project-label"><i class="fa-solid fa-building"></i> ${_esc(item.projectName)}</span>`
     : '';
 
-  /* ── Primary specs (area, bedrooms, bathrooms) ── */
-  const specs = Array.isArray(item.specs) ? item.specs : _splitDescription(item.specs || '');
-  const localizedSpecs = specs.map(spec => _localizeSpec(spec, currentLang, pageKey));
   const specsHtml = specs.length
     ? `<ul class="listing-features">${localizedSpecs.map(spec => {
         const meta = _getDetailMeta(spec);

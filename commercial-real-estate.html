@@ -57,12 +57,17 @@
             <p data-i18n="pageSubtitle">Diverse commercial units - offices, shops, clinics, and more</p>
         </section>
 
-        <!-- Listings Section Removed -->
+        <!-- Listings Section -->
         <section class="listings-section">
-            <div class="projects-grid" style="padding-top: 24px;">
-                <p class="listings-empty" style="display: block;">
+            <div id="listings-filter" class="listing-filter" role="group" aria-label="Unit type filter">
+                <!-- Populated by listings.js -->
+            </div>
+
+            <div class="projects-grid" id="listings-grid" style="padding-top: 24px;">
+                <!-- Populated by listings.js -->
+                <p id="listings-empty" class="listings-empty">
                     <i class="fa-solid fa-building-circle-xmark"></i>
-                    <span data-i18n="emptyState">No listings are published on this page right now. Please contact us for direct assistance.</span>
+                    <span data-i18n="emptyState">No units are currently available in this category. Contact us for more details.</span>
                 </p>
             </div>
         </section>
@@ -91,7 +96,7 @@
                 <ul>
                     <li>
                         <i class="fa-solid fa-phone"></i>
-                        <a href="tel:+201006140168">CALL</a>
+                        <a href="tel:+201111424611">CALL</a>
                     </li>
                     <li>
                         <i class="fa-solid fa-envelope"></i>
@@ -123,5 +128,10 @@
     </div>
 
     <script src="js/script.js?v=2"></script>
+    <script src="js/commercial-inventory-data.js?v=3"></script>
+    <script src="js/listings.js?v=2"></script>
+    <script>
+        initListingsPage([], 'commercial');
+    </script>
 </body>
 </html>

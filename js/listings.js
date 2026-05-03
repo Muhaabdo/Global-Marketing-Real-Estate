@@ -444,8 +444,8 @@ function _buildCard(item, uiStrings, currentLang, pageKey) {
   const article = document.createElement('article');
   article.className = 'project-card listing-card';
 
-  const hasMultipleImages = Array.isArray(item.images) && item.images.length > 0;
-  const images = hasMultipleImages ? item.images : [item.image || PLACEHOLDER_IMAGE];
+  const images = _normalizeListingImages(item);
+  const hasMultipleImages = images.length > 1;
   const contactInfo = CONTACT_INFO[item.page] || CONTACT_INFO.default;
   const localizedUnitType = pageKey === 'commercial'
     ? (currentLang === 'ar' ? (item.unitTypeAr || item.unitType) : (item.unitTypeEn || item.unitType))
@@ -456,7 +456,9 @@ function _buildCard(item, uiStrings, currentLang, pageKey) {
     : _localizeTitle(item.title, currentLang, pageKey);
 
   /* ── Primary specs (area, bedrooms, bathrooms) ── */
-  const specs = Array.isArray(item.specs) ? item.specs : _splitDescription(item.specs || '');
+  const specs = Array.isArray(item.specs)
+    ? item.specs
+    : (typeof item.specs === 'string' ? _splitDescription(item.specs) : []);
   const localizedSpecs = specs.map(spec => _localizeSpec(spec, currentLang, pageKey));
 
   const localizedDescription = _localizeDescription(item.description, currentLang, pageKey);
@@ -856,6 +858,26 @@ function _getDetailMeta(detail) {
   }
 
   return { icon: 'fa-solid fa-circle-check' };
+}
+
+function _sanitizeImageUrl(url) {
+  const raw = String(url || '').trim();
+  if (!raw) return '';
+  let cleaned = raw.replace(/\s+/g, '');
+  cleaned = cleaned.replace(/https?:\/\/https?:\/\//gi, 'https://');
+  return cleaned;
+}
+
+function _normalizeListingImages(item) {
+  const rawImages = item && item.images;
+  const rawImage = item && item.image;
+  const list = Array.isArray(rawImages)
+    ? rawImages
+    : (typeof rawImages === 'string' && rawImages.trim()
+        ? [rawImages]
+        : (typeof rawImage === 'string' && rawImage.trim() ? [rawImage] : []));
+  const normalized = list.map(_sanitizeImageUrl).filter(Boolean);
+  return normalized.length ? normalized : [PLACEHOLDER_IMAGE];
 }
 
 function _esc(str) {
